@@ -3,6 +3,11 @@
 let cnst a = (fun _ -> a)
 let flip f a b = f b a
 
+let tryCast<'a> (o: obj) =
+    match o with
+    | :? 'a as a -> Some a
+    | _ -> None
+
 let nil = System.Nullable()
 
 let (|?) = defaultArg
