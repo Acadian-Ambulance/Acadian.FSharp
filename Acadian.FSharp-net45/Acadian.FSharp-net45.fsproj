@@ -799,7 +799,7 @@
   <ItemGroup>
     <None Include="paket.references" />
     <Compile Include="AssemblyInfo.fs" />
-    <Compile Include="FSharp.fs" />
+    <Compile Include="../Acadian.FSharp/FSharp.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
