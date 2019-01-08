@@ -156,6 +156,14 @@ type OptionBuilder() =
         try body disposable
         finally disposable.Dispose()
 
+    member this.TryWith (body, handler) =
+        try this.ReturnFrom (body ())
+        with e -> handler e
+
+    member this.TryFinally (body, compensation) =
+        try this.ReturnFrom (body ())
+        finally compensation ()
+
 /// Builds an Option using computation expression syntax.
 /// Combine returns the first Some value, so an `if` without an else that returns a Some value will return that value
 /// without executing the following code, while a None will return the result of the following code.
@@ -235,6 +243,14 @@ type ResultBuilder() =
     member this.Using (disposable: #System.IDisposable, body) =
         try body disposable
         finally disposable.Dispose()
+
+    member this.TryWith (body, handler) =
+        try this.ReturnFrom (body ())
+        with e -> handler e
+
+    member this.TryFinally (body, compensation) =
+        try this.ReturnFrom (body ())
+        finally compensation ()
 
 /// Builds a Result using computation expression syntax.
 /// Combine returns upon encountering an Error value, so an `if` without an else that returns an Error value will return
