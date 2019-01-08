@@ -230,10 +230,7 @@ type ResultBuilder() =
     member this.Delay f = f
     member this.Run f = f ()
 
-    member this.Combine (x, f) =
-        match x with
-        | Ok () -> f ()
-        | Error e -> Error e
+    member this.Combine (x: Result<unit, _>, f) = Result.bind f x
 
     member this.Using (disposable: #System.IDisposable, body) =
         try body disposable
