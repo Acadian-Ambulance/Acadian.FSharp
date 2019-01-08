@@ -2,6 +2,8 @@
 
 /// Returns a function that returns the given constant value. `(fun _ -> a)`
 let inline cnst a = (fun _ -> a)
+/// Returns a function that returns the given constant value. `(fun _ _ -> a)`
+let inline cnst2 a = (fun _ _ -> a)
 
 /// Flips the order of two arguments of a function. `flip f a b = f b a`
 let inline flip f a b = f b a
@@ -74,6 +76,7 @@ module String =
     let inline toLower (s: string) = s.ToLower()
     let inline toUpper (s: string) = s.ToUpper()
     let inline trim (s: string) = s.Trim()
+    let inline trimChars chars (s: string) = s.Trim(chars)
     let inline insert i value (s: string) = s.Insert(i, value)
     let inline replace (oldValue: string) newValue (str: string) = str.Replace(oldValue, newValue)
     let inline padLeft width c (s: string) = s.PadLeft(width, c)
