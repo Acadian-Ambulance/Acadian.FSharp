@@ -22,7 +22,8 @@ or keep reading for an overview of the additions and an in-depth look at the new
 
 This library extends several core modules:
 
-- `String` is filled out with almost all System.String member functions as module functions.
+- `String` is filled out with almost all System.String member functions as module functions, as well as a few new
+  functions such as `ifEmpty` and `ifWhitespace`.
 - `Seq` has additions such as `isNotEmpty` and `tryMax`.
 - `Option` has additions such as `iter2`, `iter3`, and `ofCond`.
 - `Result` has additions to assist in validation workflows such as `okIf`, `errorIf`, `ofCond`, `ofOption`, `ofRegex`

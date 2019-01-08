@@ -66,6 +66,12 @@ module String =
     /// Returns true if the string is not null nor whitespace.
     let isNotWhiteSpace = not << isWhiteSpace
 
+    /// Returns fallback if the string is null or empty; the input string otherwise.
+    let inline ifEmpty fallback s = if isEmpty s then fallback else s
+
+    /// Returns fallback if the string is null or whitespace; the input string otherwise.
+    let inline ifWhiteSpace fallback s = if isEmpty s then fallback else s
+
     let inline contains value (s: string) = s.Contains(value)
     let inline startsWith value (s: string) = s.StartsWith(value)
     let inline endsWith value (s: string) = s.EndsWith(value)
@@ -99,6 +105,9 @@ module Tuple =
 module Seq =
     /// Returns true if the sequence contains any elements; false otherwise.
     let inline isNotEmpty s = not <| Seq.isEmpty s
+
+    /// Returns fallback if the sequence is empty; the input sequence otherwise.
+    let inline ifEmpty fallback s = if Seq.isEmpty s then fallback else s
 
     /// Returns true if the sequence has an element equal to the value. Equivalent to `flip Seq.contains`.
     let inline containedIn sequence value = Seq.contains value sequence
