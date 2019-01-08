@@ -1,13 +1,13 @@
 ﻿module Acadian.FSharp
 
 /// Returns a function that returns the given constant value. `(fun _ -> a)`
-let cnst a = (fun _ -> a)
+let inline cnst a = (fun _ -> a)
 
 /// Flips the order of two arguments of a function. `flip f a b = f b a`
-let flip f a b = f b a
+let inline flip f a b = f b a
 
 /// Returns Some if the object is the given type; otherwise returns None.
-let tryCast<'a> (o: obj) =
+let inline tryCast<'a> (o: obj) =
     match o with
     | :? 'a as a -> Some a
     | _ -> None
@@ -19,7 +19,7 @@ let nil = System.Nullable()
 let (|?) = defaultArg
 
 module Parse =
-    let private tryToOption (s, v) = if s then Some v else None
+    let inline private tryToOption (s, v) = if s then Some v else None
 
     /// Attempts to parse a string into an int and returns Some upon success and None upon failure.
     let Int s = System.Int32.TryParse(s) |> tryToOption
@@ -64,29 +64,29 @@ module String =
     /// Returns true if the string is not null nor whitespace.
     let isNotWhiteSpace = not << isWhiteSpace
 
-    let contains value (s: string) = s.Contains(value)
-    let startsWith value (s: string) = s.StartsWith(value)
-    let endsWith value (s: string) = s.EndsWith(value)
-    let indexOf (value: string) (s: string) = s.IndexOf(value)
-    let lastIndexOf (value: string) (s: string) = s.LastIndexOf(value)
-    let equalsIgnoreCase (s1: string) (s2: string) = s1.Equals(s2, StringComparison.CurrentCultureIgnoreCase)
+    let inline contains value (s: string) = s.Contains(value)
+    let inline startsWith value (s: string) = s.StartsWith(value)
+    let inline endsWith value (s: string) = s.EndsWith(value)
+    let inline indexOf (value: string) (s: string) = s.IndexOf(value)
+    let inline lastIndexOf (value: string) (s: string) = s.LastIndexOf(value)
+    let inline equalsIgnoreCase (s1: string) (s2: string) = s1.Equals(s2, StringComparison.CurrentCultureIgnoreCase)
 
-    let toLower (s: string) = s.ToLower()
-    let toUpper (s: string) = s.ToUpper()
-    let trim (s: string) = s.Trim()
-    let insert i value (s: string) = s.Insert(i, value)
-    let replace (oldValue: string) newValue (str: string) = str.Replace(oldValue, newValue)
-    let padLeft width c (s: string) = s.PadLeft(width, c)
-    let padRight width c (s: string) = s.PadRight(width, c)
-    let substring start length (s: string) = s.Substring(start, length)
-    let substringFrom start (s: string) = s.Substring(start)
+    let inline toLower (s: string) = s.ToLower()
+    let inline toUpper (s: string) = s.ToUpper()
+    let inline trim (s: string) = s.Trim()
+    let inline insert i value (s: string) = s.Insert(i, value)
+    let inline replace (oldValue: string) newValue (str: string) = str.Replace(oldValue, newValue)
+    let inline padLeft width c (s: string) = s.PadLeft(width, c)
+    let inline padRight width c (s: string) = s.PadRight(width, c)
+    let inline substring start length (s: string) = s.Substring(start, length)
+    let inline substringFrom start (s: string) = s.Substring(start)
 
     /// Splits the string on the given character, removing empty entries.
-    let split (splitChar: char) (s: string) =
-        s.Split([| splitChar |], System.StringSplitOptions.RemoveEmptyEntries)
+    let inline split (splitChar: char) (s: string) =
+        s.Split([| splitChar |], StringSplitOptions.RemoveEmptyEntries)
 
     /// Converts the object to string with the given formatting string.
-    let format fmt (x: 'a) = String.Format(sprintf "{0:%s}" fmt, x)
+    let inline format fmt (x: 'a) = String.Format(sprintf "{0:%s}" fmt, x)
 
 module Tuple =
     let pack2 a b = (a, b)
@@ -94,34 +94,34 @@ module Tuple =
     let pack4 a b c d = (a, b, c, d)
 
 module Seq =
-    /// Returns true if the sequence contains any elements; false otherwise
-    let isNotEmpty s = not <| Seq.isEmpty s
+    /// Returns true if the sequence contains any elements; false otherwise.
+    let inline isNotEmpty s = not <| Seq.isEmpty s
 
     /// Returns true if the sequence has an element equal to the value. Equivalent to `flip Seq.contains`.
-    let containedIn sequence value = Seq.contains value sequence
+    let inline containedIn sequence value = Seq.contains value sequence
 
     /// Returns Some <maximum value> if the sequence is not empty; otherwise returns None.
-    let tryMax s = if Seq.isEmpty s then None else Some <| Seq.max s
+    let inline tryMax s = if Seq.isEmpty s then None else Some <| Seq.max s
     /// Returns Some <maximum value> if the sequence is not empty; otherwise returns None.
-    let tryMaxBy projection s = if Seq.isEmpty s then None else Some <| Seq.maxBy projection s
+    let inline tryMaxBy projection s = if Seq.isEmpty s then None else Some <| Seq.maxBy projection s
 
 module Option =
     /// Returns Some value when `predicate value` is true; otherwise returns None.
-    let ofCond predicate value = Some value |> Option.filter predicate
+    let inline ofCond predicate value = Some value |> Option.filter predicate
 
     /// Returns Some s when s is not whitespace; otherwise returns None.
-    let ofString s = if String.isWhiteSpace s then None else Some s
+    let inline ofString s = if String.isWhiteSpace s then None else Some s
     /// Returns empty string when input is None; otherwise returns the Some value of the input.
-    let toString = Option.defaultValue ""
+    let inline toString s = Option.defaultValue "" s
 
     /// Executes fn on the values of the options if both options are Some; otherwise does nothing.
-    let iter2 fn a b =
+    let inline iter2 fn a b =
         match a, b with
         | Some x, Some y -> fn x y
         | _, _ -> ()
 
     /// Executes fn on the values of the options if all options are Some; otherwise does nothing.
-    let iter3 fn a b c =
+    let inline iter3 fn a b c =
         match a, b, c with
         | Some x, Some y, Some z -> fn x y z
         | _ -> ()
@@ -146,41 +146,41 @@ let option = OptionBuilder()
 
 module Result =
     /// Returns `Error err` if res is Ok v and `predicate v` returns false; otherwise returns res.
-    let okIf predicate err res =
+    let inline okIf predicate err res =
         res |> Result.bind (fun v -> if predicate v then Ok v else Error err)
 
     /// Returns `Error err` if res is Ok v and `predicate v` returns true; otherwise returns res.
-    let errorIf predicate err res =
+    let inline errorIf predicate err res =
         okIf (not << predicate) err res
 
     /// Returns `Ok opt` if opt is None or if it is Some and `predicate opt.Value` is true; otherwise returns `Error err`.
-    let okIfNoneOr predicate err opt =
+    let inline okIfNoneOr predicate err opt =
         match opt with
         | Some v when not <| predicate v -> Error err
         | o -> Ok o
 
     /// Returns `Ok value` if `predicate value` is true; otherwise returns `Error err`.
-    let ofCond predicate err value = Ok value |> okIf predicate err
+    let inline ofCond predicate err value = Ok value |> okIf predicate err
 
     /// Returns `Ok opt.Value` if opt is Some; otherwise returns `Error err`.
-    let ofOption err opt =
+    let inline ofOption err opt =
         match opt with
         | Some x -> Ok x
         | None -> Error err
 
     /// Returns `Ok input.Value` if input is not null; otherwise returns `Error err`.
-    let ofNullable err input = input |> Option.ofNullable |> ofOption err
+    let inline ofNullable err input = input |> Option.ofNullable |> ofOption err
     /// Returns `Ok input` if input is not null; otherwise returns `Error err`.
-    let ofObj err input = input |> Option.ofObj |> ofOption err
+    let inline ofObj err input = input |> Option.ofObj |> ofOption err
 
     /// Returns `Ok input` if input matches the given regular expression pattern; otherwise returns `Error err`.
-    let ofRegex pattern err input =
+    let inline ofRegex pattern err input =
         if System.Text.RegularExpressions.Regex.IsMatch(input, pattern) then
             Ok input
         else Error err
 
     /// If res is `Ok v`, returns `Some v`; otherwise returns None.
-    let toOption res =
+    let inline toOption res =
         match res with
         | Ok x -> Some x
         | Error _ -> None
@@ -209,6 +209,6 @@ let result = ResultBuilder()
 
 module Reflection =
     /// Given an instance of a union case, returns the name of the union case.
-    let unionCaseName (x: 'a) =
+    let inline unionCaseName (x: 'a) =
         let case, _ = Reflection.FSharpValue.GetUnionFields(x, typedefof<'a>)
         case.Name
