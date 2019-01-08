@@ -14,6 +14,11 @@ let inline tryCast<'a> (o: obj) =
     | :? 'a as a -> Some a
     | _ -> None
 
+/// Calls f and returns the result in Ok if it did not throw; otherwise catches the exception and returns it in an Error.
+let inline tryResult f =
+    try Ok (f ())
+    with e -> Error e
+
 /// The null System.Nullable value.
 let nil = System.Nullable()
 
@@ -157,6 +162,15 @@ type OptionBuilder() =
 let option = OptionBuilder()
 
 module Result =
+    /// Returns true if res is an Ok value; false otherwise.
+    let inline isOk res =
+        match res with
+        | Ok _ -> true
+        | Error _ -> false
+
+    /// Returns true if res is an Error value; false otherwise.
+    let inline isError res = not <| isOk res
+
     /// Returns `Error err` if res is Ok v and `predicate v` returns false; otherwise returns res.
     let inline okIf predicate err res =
         res |> Result.bind (fun v -> if predicate v then Ok v else Error err)
@@ -196,6 +210,17 @@ module Result =
         match res with
         | Ok x -> Some x
         | Error _ -> None
+
+    /// Turns a sequence of Results into a single Result.
+    /// Returns Error of the list of errors if at least one Error is present; otherwise returns Ok of the list of Ok values.
+    let sequence rs =
+        let folder r state =
+            match r, state with
+            | Ok v, Ok vs -> Ok (v :: vs)
+            | Ok _, Error es -> Error es
+            | Error e, Ok _ -> Error [e]
+            | Error e, Error es -> Error (e :: es)
+        Seq.foldBack folder rs (Ok [])
 
 type ResultBuilder() =
     member this.Bind (x, f) = Result.bind f x

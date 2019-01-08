@@ -14,6 +14,8 @@ or keep reading for an overview of the additions and an in-depth look at the new
   Example: `list1 |> flip List.append list2`. With the flip, the lists will occur in the resulting list in the order
   in which they appear in the code even though we're using a forward pipe. Without the flip, the elements of `list1`
   would occur _after_ the elements of `list2` in the resulting list.
+- `tryResult` calls a function and returns `Ok` of the result if no exception was thrown or `Error` of the thrown
+  exception.
 - `tryCast<'a>` returns `Some` if the object is the given type; otherwise returns `None`.
 - `nil` value is the null `System.Nullable<T>` value. This is purely to make it easier to refer to.
 - `|?` operator is `defaultArg` and equivalent to `|> Option.defaultValue`.
@@ -26,8 +28,8 @@ This library extends several core modules:
   functions such as `ifEmpty` and `ifWhitespace`.
 - `Seq` has additions such as `isNotEmpty` and `tryMax`.
 - `Option` has additions such as `iter2`, `iter3`, and `ofCond`.
-- `Result` has additions to assist in validation workflows such as `okIf`, `errorIf`, `ofCond`, `ofOption`, `ofRegex`
-  and more.
+- `Result` has additions to assist in validation workflows such as `isOk`, `isError`, `okIf`, `errorIf`, `ofCond`,
+  `ofOption`, `ofRegex`, `sequence` and more.
 
 ## New Modules
 
