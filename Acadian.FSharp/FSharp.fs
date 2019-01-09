@@ -219,9 +219,9 @@ module Result =
         | Ok x -> Some x
         | Error _ -> None
 
-    /// Turns a sequence of Results into a single Result.
+    /// Accumulates a sequence of Results into a single Result.
     /// Returns Error of the list of errors if at least one Error is present; otherwise returns Ok of the list of Ok values.
-    let sequence rs =
+    let accumulate rs =
         let folder r state =
             match r, state with
             | Ok v, Ok vs -> Ok (v :: vs)

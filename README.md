@@ -29,7 +29,7 @@ This library extends several core modules:
 - `Seq` has additions such as `isNotEmpty` and `tryMax`.
 - `Option` has additions such as `iter2`, `iter3`, and `ofCond`.
 - `Result` has additions to assist in validation workflows such as `isOk`, `isError`, `okIf`, `errorIf`, `ofCond`,
-  `ofOption`, `ofRegex`, `sequence` and more.
+  `ofOption`, `ofRegex`, `accumulate` and more.
 
 ## New Modules
 
