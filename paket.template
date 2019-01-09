@@ -9,6 +9,6 @@ projectUrl https://github.com/Acadian-Ambulance/Acadian.FSharp
 licenseUrl http://opensource.org/licenses/MIT
 files
     Acadian.FSharp/bin/Release/netstandard1.6/Acadian.FSharp.dll ==> lib/netstandard1.6
-    Acadian.FSharp-net45/bin/Release/Acadian.FSharp.dll ==> lib/net45
+    Acadian.FSharp/bin/Release/net45/Acadian.FSharp.dll ==> lib/net45
 dependencies
     FSharp.Core >= 4.3.4
