@@ -78,8 +78,11 @@ module String =
     let inline ifWhiteSpace fallback s = if isEmpty s then fallback else s
 
     let inline contains value (s: string) = s.Contains(value)
+    let inline containsIgnoreCase value (s: string) = s.IndexOf(value, StringComparison.CurrentCultureIgnoreCase) >= 0
     let inline startsWith value (s: string) = s.StartsWith(value)
+    let inline startsWithIgnoreCase value (s: string) = s.StartsWith(value, StringComparison.CurrentCultureIgnoreCase)
     let inline endsWith value (s: string) = s.EndsWith(value)
+    let inline endsWithIgnoreCase value (s: string) = s.EndsWith(value, StringComparison.CurrentCultureIgnoreCase)
     let inline indexOf (value: string) (s: string) = s.IndexOf(value)
     let inline lastIndexOf (value: string) (s: string) = s.LastIndexOf(value)
     let inline equalsIgnoreCase (s1: string) (s2: string) = s1.Equals(s2, StringComparison.CurrentCultureIgnoreCase)
