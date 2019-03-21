@@ -3,8 +3,8 @@
 This library contains some useful utility functions that feel missing from the F# core library. It also contains
 computation expression builders for Option and Result workflows.
 
-The library is small, in a single file, and documented, so you could just [read the source code](Acadian.FSharp/FSharp.fs),
-or keep reading for an overview of the additions and an in-depth look at the new workflows.
+The library is small and documented, so you could just [read the source code](Acadian.FSharp/FSharp.fs), or keep reading
+for an overview of the additions and an in-depth look at the new workflows.
 
 ## Top-level Functions
 
@@ -233,3 +233,21 @@ This works similarly to the `option` example, except the short-circuiting value 
 
 This is more advantageous if you have multiple short-circuiting checks with calculations in-between where it could
 remove multiple levels of indentation.
+
+
+### AsyncOption and AsyncResult Builders
+
+The `asyncOption` and `asyncResult` workflows are appropriate when you need to compute option/result values
+asynchronously. They work like their non-async counterparts, but also allow you to await Async values with `let!` and
+`do!`.
+
+Note that Bind (`let!`/`do!`) is overloaded to unwrap either Async or Option/Result, but not both. For example, if you
+have an `Async<Option<'a>>` value in `ao`, you need to bind twice to get a Some value:
+
+```fsharp
+asyncOption {
+    let! o = ao // ao is awaited and the resulting option is assigned to o
+    let! x = o // if o is Some, bind x to its 'a value 
+    ...
+}
+```
