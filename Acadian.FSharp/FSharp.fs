@@ -260,6 +260,23 @@ type ResultBuilder() =
 /// that value without executing the following code, while an Ok () will return the result of the following code.
 let result = ResultBuilder()
 
+module Async =
+    /// Apply a transforming function to the result of an asynchronous computation.
+    let inline map f a = async {
+        let! x = a
+        return f x
+    }
+
+    /// Apply an asynchronous transforming function to the result of an asynchronous computation.
+    let inline mapAsync f a = async {
+        let! x = a
+        return! f x
+    }
+
+    // Return an asynchronous computation that will wait for the given task to complete.
+    let inline AwaitPlainTask (task: System.Threading.Tasks.Task) =
+        task |> Async.AwaitIAsyncResult |> Async.Ignore
+
 module Reflection =
     /// Given an instance of a union case, returns the name of the union case.
     let inline unionCaseName (x: 'a) =

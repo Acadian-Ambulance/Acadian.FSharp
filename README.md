@@ -30,6 +30,7 @@ This library extends several core modules:
 - `Option` has additions such as `iter2`, `iter3`, and `ofCond`.
 - `Result` has additions to assist in validation workflows such as `isOk`, `isError`, `okIf`, `errorIf`, `ofCond`,
   `ofOption`, `ofRegex`, `accumulate` and more.
+- `Async` has additions to fill gaps in the base library: `map`, `mapAsync`, and `AwaitPlainTask`.
 
 ## New Modules
 
