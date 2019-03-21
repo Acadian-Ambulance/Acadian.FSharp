@@ -1,29 +1,52 @@
-﻿module Acadian.FSharp
+﻿namespace Acadian.FSharp
 
-/// Returns a function that returns the given constant value. `(fun _ -> a)`
-let inline cnst a = (fun _ -> a)
-/// Returns a function that returns the given constant value. `(fun _ _ -> a)`
-let inline cnst2 a = (fun _ _ -> a)
+[<AutoOpen>]
+module Prelude =
+    /// Returns a function that returns the given constant value. `(fun _ -> a)`
+    let inline cnst a = (fun _ -> a)
+    /// Returns a function that returns the given constant value. `(fun _ _ -> a)`
+    let inline cnst2 a = (fun _ _ -> a)
 
-/// Flips the order of two arguments of a function. `flip f a b = f b a`
-let inline flip f a b = f b a
+    /// Flips the order of two arguments of a function. `flip f a b = f b a`
+    let inline flip f a b = f b a
 
-/// Returns Some if the object is the given type; otherwise returns None.
-let inline tryCast<'a> (o: obj) =
-    match o with
-    | :? 'a as a -> Some a
-    | _ -> None
+    /// Returns Some if the object is the given type; otherwise returns None.
+    let inline tryCast<'a> (o: obj) =
+        match o with
+        | :? 'a as a -> Some a
+        | _ -> None
 
-/// Calls f and returns the result in Ok if it did not throw; otherwise catches the exception and returns it in an Error.
-let inline tryResult f =
-    try Ok (f ())
-    with e -> Error e
+    /// Calls f and returns the result in Ok if it did not throw; otherwise catches the exception and returns it in an Error.
+    let inline tryResult f =
+        try Ok (f ())
+        with e -> Error e
 
-/// The null System.Nullable value.
-let nil = System.Nullable()
+    /// The null System.Nullable value.
+    let nil = System.Nullable()
 
-/// defaultArg operator, equivalent to `|> Option.defaultValue`
-let (|?) = defaultArg
+    /// defaultArg operator, equivalent to `|> Option.defaultValue`
+    let (|?) = defaultArg
+
+    /// Builds an Option using computation expression syntax.
+    /// Combine returns the first Some value, so an `if` without an else that returns a Some value will return that value
+    /// without executing the following code, while a None will return the result of the following code.
+    let option = OptionBuilder()
+
+    /// Builds an Async Option using computation expression syntax.
+    /// Combine returns the first Some value, so an `if` without an else that returns a Some value will return that value
+    /// without executing the following code, while a None will return the result of the following code.
+    let asyncOption = AsyncOptionBuilder()
+
+    /// Builds a Result using computation expression syntax.
+    /// Combine returns upon encountering an Error value, so an `if` without an else that returns an Error value will return
+    /// that value without executing the following code, while an Ok () will return the result of the following code.
+    let result = ResultBuilder()
+
+    /// Builds an Async Result using computation expression syntax.
+    /// Combine returns upon encountering an Error value, so an `if` without an else that returns an Error value will return
+    /// that value without executing the following code, while an Ok () will return the result of the following code.
+    let asyncResult = AsyncResultBuilder()
+
 
 module Parse =
     let inline private tryToOption (s, v) = if s then Some v else None
@@ -146,32 +169,6 @@ module Option =
         | Some x, Some y, Some z -> fn x y z
         | _ -> ()
 
-type OptionBuilder() =
-    member this.Bind (x, f) = Option.bind f x
-    member this.Return x = Some x
-    member this.ReturnFrom (x: Option<_>) = x
-    member this.Zero () = None
-    member this.Delay f = f
-    member this.Run f = f ()
-    member this.Combine (x, f) = Option.orElseWith f x
-
-    member this.Using (disposable: #System.IDisposable, body) =
-        try body disposable
-        finally disposable.Dispose()
-
-    member this.TryWith (body, handler) =
-        try this.ReturnFrom (body ())
-        with e -> handler e
-
-    member this.TryFinally (body, compensation) =
-        try this.ReturnFrom (body ())
-        finally compensation ()
-
-/// Builds an Option using computation expression syntax.
-/// Combine returns the first Some value, so an `if` without an else that returns a Some value will return that value
-/// without executing the following code, while a None will return the result of the following code.
-let option = OptionBuilder()
-
 module Result =
     /// Returns true if res is an Ok value; false otherwise.
     let inline isOk res =
@@ -233,32 +230,22 @@ module Result =
             | Error e, Error es -> Error (e :: es)
         Seq.foldBack folder rs (Ok [])
 
-type ResultBuilder() =
-    member this.Bind (x, f) = Result.bind f x
-    member this.Return x = Ok x
-    member this.ReturnFrom (x: Result<_,_>) = x
-    member this.Zero () = Ok ()
-    member this.Delay f = f
-    member this.Run f = f ()
+module Async =
+    /// Apply a transforming function to the result of an asynchronous computation.
+    let inline map f a = async {
+        let! x = a
+        return f x
+    }
 
-    member this.Combine (x: Result<unit, _>, f) = Result.bind f x
+    /// Apply an asynchronous transforming function to the result of an asynchronous computation.
+    let inline mapAsync f a = async {
+        let! x = a
+        return! f x
+    }
 
-    member this.Using (disposable: #System.IDisposable, body) =
-        try body disposable
-        finally disposable.Dispose()
-
-    member this.TryWith (body, handler) =
-        try this.ReturnFrom (body ())
-        with e -> handler e
-
-    member this.TryFinally (body, compensation) =
-        try this.ReturnFrom (body ())
-        finally compensation ()
-
-/// Builds a Result using computation expression syntax.
-/// Combine returns upon encountering an Error value, so an `if` without an else that returns an Error value will return
-/// that value without executing the following code, while an Ok () will return the result of the following code.
-let result = ResultBuilder()
+    // Return an asynchronous computation that will wait for the given task to complete.
+    let inline AwaitPlainTask (task: System.Threading.Tasks.Task) =
+        task |> Async.AwaitIAsyncResult |> Async.Ignore
 
 module Reflection =
     /// Given an instance of a union case, returns the name of the union case.
