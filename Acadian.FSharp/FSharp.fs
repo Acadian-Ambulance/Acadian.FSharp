@@ -100,6 +100,12 @@ module String =
     /// Returns fallback if the string is null or whitespace; the input string otherwise.
     let inline ifWhiteSpace fallback s = if isEmpty s then fallback else s
 
+    /// Applies f to the string if it is not empty or null, otherwise returns the same string.
+    let inline ifNotEmpty f s = if s |> isEmpty then s else f s
+
+    /// Applies f to the string if it is not whitespace or null, otherwise returns the same string.
+    let inline ifNotWhiteSpace f s = if s |> isWhiteSpace then s else f s
+
     let inline contains value (s: string) = s.Contains(value)
     let inline containsIgnoreCase value (s: string) = s.IndexOf(value, StringComparison.CurrentCultureIgnoreCase) >= 0
     let inline startsWith value (s: string) = s.StartsWith(value)
