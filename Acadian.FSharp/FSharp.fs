@@ -10,10 +10,10 @@ module Prelude =
     /// Flips the order of two arguments of a function. `flip f a b = f b a`
     let inline flip f a b = f b a
 
-    /// Performs a side effect and returns the input of said side effect.
+    /// Applies a side-effect function to a value, ignoring the result, and returns the original value.
     let inline tee f x = f x |> ignore; x
 
-    /// Custom operator for `tee`: Given a value, apply a function to it, ignore the result, then return the original value.
+    /// Applies a side-effect function to a value, ignoring the result, and returns the original value.
     let inline (|>!) x fn = tee fn x
 
     /// Transforms an uncurried function to a curried function.
