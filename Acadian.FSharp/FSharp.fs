@@ -10,6 +10,24 @@ module Prelude =
     /// Flips the order of two arguments of a function. `flip f a b = f b a`
     let inline flip f a b = f b a
 
+    /// Applies a side-effect function to a value, ignoring the result, and returns the original value.
+    let inline tee f x = f x |> ignore; x
+
+    /// Applies a side-effect function to a value, ignoring the result, and returns the original value.
+    let inline (|>!) x fn = tee fn x
+
+    /// Transforms an uncurried function to a curried function.
+    let inline curry f a b = f(a,b)
+
+    /// Transforms an uncurried function to a curried function.
+    let inline uncurry f (a,b) = f a b
+
+    /// Transforms an uncurried function to a triple-curried function.
+    let inline curry3 f a b c = f (a, b, c)
+
+    /// Transforms an uncurried function to a triple-curried function.
+    let inline uncurry3 f (a,b,c) = f a b c
+
     /// Returns Some if the object is the given type; otherwise returns None.
     let inline tryCast<'a> (o: obj) =
         match o with
@@ -140,6 +158,9 @@ module Tuple =
     let pack2 a b = (a, b)
     let pack3 a b c = (a, b, c)
     let pack4 a b c d = (a, b, c, d)
+
+    let swap (a, b) = (b, a)
+
 
 module Seq =
     /// Returns true if the sequence contains any elements; false otherwise.
