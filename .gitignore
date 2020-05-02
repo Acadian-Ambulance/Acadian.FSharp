@@ -255,6 +255,8 @@ paket-files/
 .idea/
 *.sln.iml
 
+.ionide
+
 # CodeRush
 .cr/
 

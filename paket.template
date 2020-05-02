@@ -1,14 +1,4 @@
-type file
-id Acadian.FSharp
-version 1.0.0
-description
-    F# utilities, including extra String, Seq, Option, and Result functions, option and result computation expressions,
-    and a Parse module.
+type project
 authors Acadian Ambulance Service
 projectUrl https://github.com/Acadian-Ambulance/Acadian.FSharp
 licenseUrl http://opensource.org/licenses/MIT
-files
-    Acadian.FSharp/bin/Release/netstandard1.6/Acadian.FSharp.dll ==> lib/netstandard1.6
-    Acadian.FSharp/bin/Release/net45/Acadian.FSharp.dll ==> lib/net45
-dependencies
-    FSharp.Core >= 4.3.4
