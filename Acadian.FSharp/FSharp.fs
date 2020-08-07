@@ -277,7 +277,16 @@ module Async =
         task |> Async.AwaitIAsyncResult |> Async.Ignore
 
 module Reflection =
+    open FSharp.Reflection
+
     /// Given an instance of a union case, returns the name of the union case.
-    let inline unionCaseName (x: 'a) =
-        let case, _ = Reflection.FSharpValue.GetUnionFields(x, typedefof<'a>)
+    let unionCaseName (x: 'a) =
+        let case, _ = FSharpValue.GetUnionFields(x, typedefof<'a>)
         case.Name
+
+    /// Parse a string into a value-less union case by name (case insensitive).
+    let parseUnionCase<'a> name =
+        FSharpType.GetUnionCases typeof<'a>
+        |> Array.tryFind (fun c -> String.equalsIgnoreCase c.Name name && c.GetFields().Length = 0)
+        |> Option.map (fun c -> FSharpValue.MakeUnion(c, [||]) :?> 'a)
+

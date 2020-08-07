@@ -243,7 +243,6 @@ FakesAssemblies/
 _Pvt_Extensions
 
 # Paket dependency manager
-.paket/paket.restore.targets
 paket.local
 paket-files/
 **/paket-files/
@@ -254,6 +253,8 @@ paket-files/
 # JetBrains Rider
 .idea/
 *.sln.iml
+
+.ionide
 
 # CodeRush
 .cr/
