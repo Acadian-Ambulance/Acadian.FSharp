@@ -2,15 +2,21 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>netstandard1.6;net45</TargetFrameworks>
+    <Authors>Acadian Ambulance Service</Authors>
+    <Description>
+      F# utilities, including extra String, Seq, Option, and Result functions, option and result computation
+      expressions, and a Parse module.
+    </Description>
+    <PackageProjectUrl>https://github.com/Acadian-Ambulance/Acadian.FSharp</PackageProjectUrl>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="paket.references" />
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="Builders.fs" />
     <Compile Include="FSharp.fs" />
+    <None Include="../LICENSE.txt" Pack="true" PackagePath="$(PackageLicenseFile)" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Update="System.ValueTuple" Version="4.4.0" />
+    <PackageReference Update="FSharp.Core" Version="4.3.4" />
   </ItemGroup>
-  <Import Project="..\.paket\Paket.Restore.targets" />
 </Project>
