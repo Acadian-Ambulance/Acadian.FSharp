@@ -258,6 +258,14 @@ module Result =
             | Error e, Error es -> Error (e :: es)
         Seq.foldBack folder rs (Ok [])
 
+    /// Partitions a sequence of Results into a list of the Ok values and a list of the Error values.
+    let partition rs =
+        let folder r (oks, errors) =
+            match r with
+            | Ok o -> (o :: oks, errors)
+            | Error e -> (oks, e :: errors)
+        Seq.foldBack folder rs ([], [])
+
 module Async =
     /// Apply a transforming function to the result of an asynchronous computation.
     let inline map f a = async {
