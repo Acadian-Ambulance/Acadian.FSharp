@@ -29,7 +29,7 @@ This library extends several core modules:
 - `Seq` has additions such as `isNotEmpty` and `tryMax`.
 - `Option` has additions such as `iter2`, `iter3`, and `ofCond`.
 - `Result` has additions to assist in validation workflows such as `isOk`, `isError`, `okIf`, `errorIf`, `ofCond`,
-  `ofOption`, `ofRegex`, `accumulate` and more.
+  `ofOption`, `ofRegex`, `accumulate`, `partition` and more.
 - `Async` has additions to fill gaps in the base library: `map`, `mapAsync`, and `AwaitPlainTask`.
 
 ## New Modules

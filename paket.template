@@ -1,6 +1,0 @@
-type project
-authors Acadian Ambulance Service
-projectUrl https://github.com/Acadian-Ambulance/Acadian.FSharp
-licenseUrl http://opensource.org/licenses/MIT
-dependencies
-    FSharp.Core >= 4.3.4

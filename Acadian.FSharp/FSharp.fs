@@ -161,7 +161,6 @@ module Tuple =
 
     let swap (a, b) = (b, a)
 
-
 module Seq =
     /// Returns true if the sequence contains any elements; false otherwise.
     let inline isNotEmpty s = not <| Seq.isEmpty s
@@ -172,9 +171,9 @@ module Seq =
     /// Returns true if the sequence has an element equal to the value. Equivalent to `flip Seq.contains`.
     let inline containedIn sequence value = Seq.contains value sequence
 
-    /// Returns Some <maximum value> if the sequence is not empty; otherwise returns None.
+    /// Returns Some (maximum value) if the sequence is not empty; otherwise returns None.
     let inline tryMax s = if Seq.isEmpty s then None else Some <| Seq.max s
-    /// Returns Some <maximum value> if the sequence is not empty; otherwise returns None.
+    /// Returns Some (maximum value) if the sequence is not empty; otherwise returns None.
     let inline tryMaxBy projection s = if Seq.isEmpty s then None else Some <| Seq.maxBy projection s
 
 module Option =
@@ -259,6 +258,14 @@ module Result =
             | Error e, Error es -> Error (e :: es)
         Seq.foldBack folder rs (Ok [])
 
+    /// Partitions a sequence of Results into a list of the Ok values and a list of the Error values.
+    let partition rs =
+        let folder r (oks, errors) =
+            match r with
+            | Ok o -> (o :: oks, errors)
+            | Error e -> (oks, e :: errors)
+        Seq.foldBack folder rs ([], [])
+
 module Async =
     /// Apply a transforming function to the result of an asynchronous computation.
     let inline map f a = async {
@@ -289,4 +296,3 @@ module Reflection =
         FSharpType.GetUnionCases typeof<'a>
         |> Array.tryFind (fun c -> String.equalsIgnoreCase c.Name name && c.GetFields().Length = 0)
         |> Option.map (fun c -> FSharpValue.MakeUnion(c, [||]) :?> 'a)
-
