@@ -9,6 +9,7 @@
     </Description>
     <PackageProjectUrl>https://github.com/Acadian-Ambulance/Acadian.FSharp</PackageProjectUrl>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
