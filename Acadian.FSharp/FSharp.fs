@@ -247,6 +247,12 @@ module Result =
         | Ok x -> Some x
         | Error _ -> None
 
+    /// If res is `Error e`, returns `Some e`; otherwise returns None.
+    let inline toErrorOption res =
+        match res with
+        | Error e -> Some e
+        | Ok _ -> None
+
     /// Accumulates a sequence of Results into a single Result.
     /// Returns Error of the list of errors if at least one Error is present; otherwise returns Ok of the list of Ok values.
     let accumulate rs =
