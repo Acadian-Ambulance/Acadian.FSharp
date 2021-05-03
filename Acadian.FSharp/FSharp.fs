@@ -272,6 +272,18 @@ module Result =
             | Error e -> (oks, e :: errors)
         Seq.foldBack folder rs ([], [])
 
+    /// Performs an action on the Ok value
+    let inline iter (action: 'a -> unit) res =
+        match res with
+        | Ok v -> v |> action
+        | _ -> ()
+
+    /// Performs an action on the Error value
+    let inline iterError (action: 'b -> unit) res =
+        match res with
+        | Error e -> e |> action
+        | _ -> ()
+
 module Async =
     /// Apply a transforming function to the result of an asynchronous computation.
     let inline map f a = async {
