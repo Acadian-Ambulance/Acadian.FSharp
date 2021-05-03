@@ -272,13 +272,13 @@ module Result =
             | Error e -> (oks, e :: errors)
         Seq.foldBack folder rs ([], [])
 
-    /// Performs an action on each Ok value
+    /// Performs an action on the Ok value
     let inline iter (action: 'a -> unit) res =
         match res with
         | Ok v -> v |> action
         | _ -> ()
 
-    /// Performs an action on each Error value
+    /// Performs an action on the Error value
     let inline iterError (action: 'b -> unit) res =
         match res with
         | Error e -> e |> action

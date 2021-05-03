@@ -62,4 +62,24 @@ let tests = testList "Tests" [
       |> Expect.equal "" ([1; 3], [2; 4])
     }
   ]
+
+  testList "Result.iter" [
+    test "Should gather Ok values into a list through side effects" {
+      let resList = [Ok 1; Error 2 ; Ok 3]
+      let mutable l: int list = []
+      resList
+      |> List.iter (Result.iter (fun o -> l <- o::l))
+      l |> Expect.equal "" [3; 1]
+    }
+  ]
+
+  testList "Result.iterError" [
+    test "Should gather Ok values into a list through side effects" {
+      let resList = [Ok 1; Error 2 ; Ok 3]
+      let mutable l: int list = []
+      resList
+      |> List.iter (Result.iterError (fun o -> l <- o::l))
+      l |> Expect.equal "" [2]
+    }
+  ]
 ]
