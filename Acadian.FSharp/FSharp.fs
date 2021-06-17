@@ -197,6 +197,11 @@ module Option =
         | Some x, Some y, Some z -> fn x y z
         | _ -> ()
 
+    /// Like `Option.ofObj` but works on types that are normally not nullable, such as record types.
+    let inline ofObjForce (r: 'a) =
+        r |> box |> Option.ofObj |> Option.map unbox<'a>
+
+
 module Result =
     /// Returns true if res is an Ok value; false otherwise.
     let inline isOk res =
