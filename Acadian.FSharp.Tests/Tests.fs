@@ -5,7 +5,7 @@ open Expecto.Flip
 open Acadian.FSharp
 
 [<Tests>]
-let tests = testList "Tests" [
+let tests = testList "FSharp module Tests" [
   testList "Result.accumulate" [
     test "Empty list returns Ok []" {
       Result.accumulate []
@@ -74,7 +74,7 @@ let tests = testList "Tests" [
   ]
 
   testList "Result.iterError" [
-    test "Should gather Ok values into a list through side effects" {
+    test "Should gather Error values into a list through side effects" {
       let resList = [Ok 1; Error 2 ; Ok 3]
       let mutable l: int list = []
       resList
