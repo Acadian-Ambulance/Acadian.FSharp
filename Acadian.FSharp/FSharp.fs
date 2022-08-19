@@ -1,4 +1,4 @@
-﻿namespace Acadian.FSharp
+namespace Acadian.FSharp
 
 [<AutoOpen>]
 module Prelude =
@@ -290,6 +290,12 @@ module Result =
         | _ -> ()
 
 module Async =
+    /// Apply an asynchronous transforming function to the result of an asynchronous computation.
+    let inline bind f a = async {
+        let! x = a
+        return! f x
+    }
+
     /// Apply a transforming function to the result of an asynchronous computation.
     let inline map f a = async {
         let! x = a
@@ -297,10 +303,11 @@ module Async =
     }
 
     /// Apply an asynchronous transforming function to the result of an asynchronous computation.
-    let inline mapAsync f a = async {
-        let! x = a
-        return! f x
-    }
+    /// Equivalent to `bind`.
+    let inline mapAsync f a = bind f a
+
+    /// Applies a side-effect function to the result of an async computation and returns the async.
+    let inline tee f a = map (fun x -> f x; x) a
 
     // Return an asynchronous computation that will wait for the given task to complete.
     let inline AwaitPlainTask (task: System.Threading.Tasks.Task) =
