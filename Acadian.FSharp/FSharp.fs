@@ -71,6 +71,7 @@ module Parse =
 
     /// Attempts to parse a string into an int and returns Some upon success and None upon failure.
     let Int s = System.Int32.TryParse(s) |> tryToOption
+    let Int64 s = System.Int64.TryParse(s) |> tryToOption
     /// Attempts to parse a string into a double and returns Some upon success and None upon failure.
     let Double s = System.Double.TryParse(s) |> tryToOption
     /// Attempts to parse a string into a decimal and returns Some upon success and None upon failure.
@@ -80,6 +81,7 @@ module Parse =
 
     /// Returns true if the string is parsable into an int.
     let IsInt s = System.Int32.TryParse(s) |> fst
+    let IsInt64 s = System.Int64.TryParse(s) |> fst
     /// Returns true if the string is parsable into a double.
     let IsDouble s = System.Double.TryParse(s) |> fst
     /// Returns true if the string is parsable into a decimal.
