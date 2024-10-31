@@ -22,3 +22,7 @@ _ReSharper*/
 
 # FAKE
 .fake/
+tags
+Session.vim
+
+cscope.out
