@@ -328,3 +328,9 @@ module Reflection =
         FSharpType.GetUnionCases typeof<'a>
         |> Array.tryFind (fun c -> String.equalsIgnoreCase c.Name name && c.GetFields().Length = 0)
         |> Option.map (fun c -> FSharpValue.MakeUnion(c, [||]) :?> 'a)
+
+module Task =
+    let inline map (mapper: 'T -> 'U) (input: System.Threading.Tasks.Task<'T>) : System.Threading.Tasks.Task<'U> = task {
+        let! value = input
+        return mapper value
+    }
