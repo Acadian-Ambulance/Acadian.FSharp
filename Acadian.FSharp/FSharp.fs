@@ -342,9 +342,9 @@ module List =
       | [] ->
         return None
       | fn :: rest ->
-        let! result = fn ()
-        if predicate result then
-          return Some result
+        let! res = fn ()
+        if predicate res then
+          return Some res
         else
           return! runUntil predicate rest
     }
