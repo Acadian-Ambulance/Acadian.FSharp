@@ -334,3 +334,17 @@ module Task =
         let! value = input
         return mapper value
     }
+
+module List =
+  let rec runUntil (predicate: 'a -> bool) (fns: (unit -> Async<'a>) list) =
+    async {
+      match fns with
+      | [] ->
+        return None
+      | fn :: rest ->
+        let! result = fn ()
+        if predicate result then
+          return Some result
+        else
+          return! runUntil predicate rest
+    }
