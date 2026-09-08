@@ -336,7 +336,7 @@ module Task =
     }
 
 module List =
-  let rec runUntil (predicate: 'a -> bool) (fns: (unit -> Async<'a>) list) =
+  let rec runUntilAsync (predicate: 'a -> bool) (fns: (unit -> Async<'a>) list) =
     async {
       match fns with
       | [] ->
@@ -346,5 +346,15 @@ module List =
         if predicate res then
           return Some res
         else
-          return! runUntil predicate rest
+          return! runUntilAsync predicate rest
     }
+
+  let rec runUntil (predicate: 'a -> bool) (fns: (unit -> 'a) list) =
+    match fns with
+    | [] -> None
+    | fn :: rest ->
+      let res = fn ()
+      if predicate res then
+        Some res
+      else
+        runUntil predicate rest
