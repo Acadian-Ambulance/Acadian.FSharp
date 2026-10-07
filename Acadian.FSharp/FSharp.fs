@@ -360,6 +360,11 @@ module Task =
         return mapper value
     }
 
+    let inline ignore (task_: System.Threading.Tasks.Task<'T>) : System.Threading.Tasks.Task<unit> = task {
+      let! _ = task_
+      return ()
+    }
+
 module List =
   let runUntilResAsync (predicate: Result<'a,'error> -> bool) (fallbackError: Result<'a,'error>) (fns: (unit -> Async<Result<'a,'error>>) list) =
     let rec runUntilResAsyncHelper (lastError: Result<'a,'error>) (fns: (unit -> Async<Result<'a,'error>>) list) = async {
